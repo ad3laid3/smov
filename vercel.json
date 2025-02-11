@@ -15,7 +15,11 @@
         },
         {
           "key": "X-Frame-Options",
-          "value": "DENY"
+          "value": "ALLOW-FROM https://nexusremains.online"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self' https://nexusremains.online;"
         },
         {
           "key": "X-XSS-Protection",
