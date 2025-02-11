@@ -8,7 +8,6 @@ import million from 'million/compiler';
 import { handlebars } from "./plugins/handlebars";
 import { PluginOption, loadEnv, splitVendorChunkPlugin } from "vite";
 import { visualizer } from "rollup-plugin-visualizer";
-
 import tailwind from "tailwindcss";
 import rtl from "postcss-rtlcss";
 
@@ -59,7 +58,13 @@ export default defineConfig(({ mode }) => {
         registerType: "autoUpdate",
         workbox: {
           maximumFileSizeToCacheInBytes: 4000000, // 4mb
-          globIgnores: ["!assets/**/*"],
+          globPatterns: ["**/*.{html,js,css,png,jpg,svg}"], // Include all necessary files <button class="citation-flag" data-index="1">
+          runtimeCaching: [
+            {
+              urlPattern: /^https:\/\/smov-sable\.vercel\.app\/$/,
+              handler: 'NetworkFirst',
+            },
+          ],
         },
         includeAssets: [
           "favicon.ico",
@@ -119,7 +124,6 @@ export default defineConfig(({ mode }) => {
       splitVendorChunkPlugin(),
       visualizer() as PluginOption
     ],
-
     build: {
       sourcemap: true,
       rollupOptions: {
@@ -155,7 +159,6 @@ export default defineConfig(({ mode }) => {
         plugins: [tailwind(), rtl()],
       },
     },
-
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
@@ -165,7 +168,6 @@ export default defineConfig(({ mode }) => {
         ),
       },
     },
-
     test: {
       environment: "jsdom",
     },
